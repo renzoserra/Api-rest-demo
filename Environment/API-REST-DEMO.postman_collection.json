@@ -1,0 +1,284 @@
+{
+	"info": {
+		"_postman_id": "7ec14fbf-0857-4bae-9465-43cf6d5d40e9",
+		"name": "API-REST-DEMO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16655719"
+	},
+	"item": [
+		{
+			"name": "Listar Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}{{CreateNewUser}}",
+					"host": [
+						"{{URL}}{{CreateNewUser}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"const body = pm.response.json()\r",
+							"pm.environment.set(\"NewUserId\", body.id)\r",
+							"\r",
+							"/*\r",
+							"\r",
+							"pm.environment.set(\"NewUserName\", body.name)\r",
+							"pm.environment.set(\"NewUserEmail\", body.email)\r",
+							"pm.environment.set(\"NewUserGender\", body.gender)\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.unset(\"NewUserName\");\r",
+							"pm.collectionVariables.unset(\"NewUserEmail\");\r",
+							"pm.collectionVariables.unset(\"NewUserGender\");\r",
+							"\r",
+							"const NewUserName = pm.variables.replaceIn(\"{{$randomFullName}}\")\r",
+							"const NewUserEmail = pm.variables.replaceIn(\"{{$randomExampleEmail}}\")\r",
+							"const NewUserGender = pm.variables.replaceIn(\"Male\")\r",
+							"\r",
+							"\r",
+							"pm.environment.set(\"NewUserName\", NewUserName);\r",
+							"pm.environment.set(\"NewUserEmail\", NewUserEmail);\r",
+							"pm.environment.set(\"NewUserGender\", NewUserGender);\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{NewUserName}}\",\r\n    \"gender\": \"{{NewUserGender}}\",\r\n    \"email\": \"{{NewUserEmail}}\",\r\n    \"status\": \"active\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{CreateNewUser}}",
+					"host": [
+						"{{URL}}{{CreateNewUser}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{URL}}{{GetUserDetails}}{{NewUserId}}",
+					"host": [
+						"{{URL}}{{GetUserDetails}}{{NewUserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const body = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Deberia validar que el status es inactive\", ()=>{\r",
+							"    pm.expect(body.status).to.equals(\"inactive\")\r",
+							"}\r",
+							")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"{{NewUser}}\",\r\n    \"name\": \"{{NewUserName}}\",\r\n    \"email\": \"{{NewUserEmail}}\",\r\n    \"gender\": \"{{NewUserGender}}\",\r\n    \"status\": \"inactive\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}{{UpdateUserDetails}}{{NewUserId}}",
+					"host": [
+						"{{URL}}{{UpdateUserDetails}}{{NewUserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}{{CreateNewUser}}",
+					"host": [
+						"{{URL}}{{CreateNewUser}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{URL}}{{DeleteUser}}{{NewUserId}}",
+					"host": [
+						"{{URL}}{{DeleteUser}}{{NewUserId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "e8314618f06f6039517d9186ee1d707a3fe2028db814a7da65f0b52bed90c932",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
